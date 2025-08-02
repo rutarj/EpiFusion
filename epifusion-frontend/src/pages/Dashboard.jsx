@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import AlertFeed from '../components/AlertFeed';
 import MapView from '../components/MapView';
@@ -8,6 +7,7 @@ import ResourcePanel from '../components/ResourcePanel';
 import AlertDetailsModal from '../components/AlertDetailsModal';
 import NotificationToast from '../components/NotificationToast';
 import { useAlerts } from '../hooks/useAlerts';
+import UploadDocCard from '../components/UploadDocCard';
 
 const Dashboard = () => {
   const { alerts, sendAlert } = useAlerts();
@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notification, setNotification] = useState({ message: '', type: 'success', isVisible: false });
 
+  /*────────── alert handlers ──────────*/
   const handleAlertSelect = (alert) => {
     setSelectedAlert(alert);
     setIsModalOpen(true);
@@ -25,56 +26,71 @@ const Dashboard = () => {
     setSelectedAlert(null);
   };
 
-  const handleApprove = async (alertId) => {
-    // This would typically call the API
-    showNotification('Alert approved successfully', 'success');
-  };
-
-  const handleFlag = async (alertId) => {
-    // This would typically call the API
-    showNotification('Alert flagged as false positive', 'success');
-  };
+  const handleApprove = async () => showNotification('Alert approved successfully');
+  const handleFlag    = async () => showNotification('Alert flagged as false positive');
 
   const handleSendAlert = async (alertId) => {
     try {
       const result = await sendAlert(alertId);
-      if (result.success) {
-        showNotification('Alert sent to responders', 'success');
-      } else {
-        showNotification('Failed to send alert', 'error');
-      }
-    } catch (error) {
+      result.success
+        ? showNotification('Alert sent to responders')
+        : showNotification('Failed to send alert', 'error');
+    } catch {
       showNotification('Failed to send alert', 'error');
     }
   };
 
-  const showNotification = (message, type = 'success') => {
-    setNotification({ message, type, isVisible: true });
-  };
+  const handleFileUpload = async (file) => {
+  const form = new FormData();
+  form.append('file', file);
+  form.append('region', 'toronto');  // or dynamic region
 
-  const hideNotification = () => {
-    setNotification(prev => ({ ...prev, isVisible: false }));
-  };
+  try {
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      body: form,
+    });
+    const data = await res.json();
+
+    data.success
+      ? showNotification(`Uploaded "${file.name}"`, 'success')
+      : showNotification(`Upload failed: ${data.message}`, 'error');
+  } catch (err) {
+    console.error(err);
+    showNotification('Network error', 'error');
+  }
+};
+
+
+  /*────────── notification helpers ──────────*/
+  const showNotification = (message, type = 'success') =>
+    setNotification({ message, type, isVisible: true });
+
+  const hideNotification = () =>
+    setNotification((prev) => ({ ...prev, isVisible: false }));
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-8rem)]">
           {/* Alert Feed Sidebar */}
           <div className="lg:col-span-1">
-            <AlertFeed 
+            <AlertFeed
               onAlertSelect={handleAlertSelect}
               selectedAlertId={selectedAlert?.id}
             />
           </div>
 
           {/* Main Content Area */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 space-y-6 overflow-y-auto">
+            {/* NEW: Upload card (companies / orgs only) */}
+            <UploadDocCard onFileUpload={handleFileUpload} />
+
             {/* Map View */}
             <div className="h-1/2">
-              <MapView 
+              <MapView
                 alerts={alerts}
                 onAlertSelect={handleAlertSelect}
                 selectedAlertId={selectedAlert?.id}
@@ -111,4 +127,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
