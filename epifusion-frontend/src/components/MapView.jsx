@@ -63,12 +63,17 @@ const MapView = ({ alerts, onAlertSelect, selectedAlertId }) => {
         </p>
       </div>
       
-      <div className="h-full">
-        <MapContainer
+      <div className="h-[60vh] md:h-[500px]">
+      <MapContainer
           center={[43.6532, -79.3832]} // Toronto as default center
-          zoom={4}
+          zoom={11}
           className="h-full w-full"
           ref={mapRef}
+          maxBounds={[
+            [43.5, -79.7], // Southwest corner
+            [43.9, -79.2]  // Northeast corner
+          ]}
+          maxBoundsViscosity={1.0} // Prevents panning outside
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
