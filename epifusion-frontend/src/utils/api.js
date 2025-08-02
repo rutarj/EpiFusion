@@ -1,7 +1,7 @@
 // API utility for EpiFusion AI Dashboard
 
-const BASE_URL = '/api'; // Change this to your actual API base URL
-
+// const BASE_URL = '/api'; // Change this to your actual API base URL
+const BASE_URL = 'http://localhost:5050/api'; // or your deployed server
 // Centralized fetch wrapper with error handling
 const apiCall = async (endpoint, options = {}) => {
   try {
@@ -104,4 +104,6 @@ export const mockApi = {
 };
 
 // Export the appropriate API based on environment
-export default process.env.NODE_ENV === 'production' ? api : mockApi; 
+// export default process.env.NODE_ENV === 'production' ? api : mockApi; 
+
+export default api; // instead of mockApi

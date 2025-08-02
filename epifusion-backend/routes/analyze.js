@@ -1,8 +1,18 @@
-const express = require("express");
+// routes/analyze.js
+import express from 'express';
+import { analyzeTextWithGemini } from '../services/geminiService.js';
+
 const router = express.Router();
-const analyzeController = require("../controllers/analyzeController");
 
-router.post("/", analyzeController.analyzeText);
+router.post('/', async (req, res) => {
+  const { text } = req.body;
+  try {
+    const alert = await analyzeTextWithGemini(text);
+    res.json({ alert });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'AI analysis failed' });
+  }
+});
 
-module.exports = router;
-
+export default router;

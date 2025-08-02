@@ -1,3 +1,4 @@
+import React from 'react';
 import { getRiskLevel, getRiskColor } from '../utils/mockData';
 
 const AlertCard = ({ alert, onApprove, onFlag, onViewDetails }) => {
