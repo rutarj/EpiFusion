@@ -8,8 +8,25 @@ import analyzeRoutes from './routes/analyze.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to allow requests from the dashboard
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'EpiFusion Backend is running',
+    timestamp: new Date().toISOString()
+  });
+});
 
 app.use('/api/alerts', alertRoutes);
 app.use('/api/analyze', analyzeRoutes);
