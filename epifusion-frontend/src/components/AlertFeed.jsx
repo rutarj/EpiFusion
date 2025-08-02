@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import AlertCard from './AlertCard';
 import { useAlerts } from '../hooks/useAlerts';
