@@ -1,0 +1,5 @@
+disease,location,lat,lng,risk_score,credibility,source,explanation,timestamp
+COVID-19,East York,43.6912,-79.3275,0.91,High,Michael Garron Hospital,High ICU admissions and rising case trend,2025-08-02T09:10:00Z
+Norovirus,North York,43.7615,-79.4111,0.82,High,North York General,Severe GI outbreak in LTC residents,2025-08-01T10:20:00Z
+RSV,Etobicoke,43.6205,-79.5132,0.55,Low,Etobicoke General,Increased respiratory cases in toddlers,2025-07-31T13:45:00Z
+Influenza,Scarborough,43.7731,-79.2572,0.66,Medium,Scarborough Grace Hospital,Seasonal flu affecting seniors in care homes,2025-08-01T15:00:00Z
