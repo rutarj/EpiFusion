@@ -9,13 +9,13 @@ import { ResourcePanel } from "@/components/resource-panel"
 import { DashboardOverview } from "@/components/dashboard-overview"
 import { AlertDetailsModal } from "@/components/alert-details-modal"
 import { NotificationToast } from "@/components/notification-toast"
-import { ConnectionStatus } from "@/components/connection-status"
+//import { ConnectionStatus } from "@/components/connection-status"
 import { type Alert } from "@/hooks/useAlerts"
 
 export default function Dashboard() {
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
   const [notifications, setNotifications] = useState<any[]>([])
-  const [backendConnected, setBackendConnected] = useState<boolean | null>(null)
+  //const [backendConnected, setBackendConnected] = useState<boolean | null>(null)
 
   const addNotification = (notification: any) => {
     const id = Date.now()
@@ -29,9 +29,9 @@ export default function Dashboard() {
     <DashboardLayout>
       <div className="flex-1 space-y-6 p-6">
         {/* Connection Status */}
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <ConnectionStatus onStatusChange={setBackendConnected} />
-        </div>
+        </div> */}
         
         {/* Dashboard Overview */}
         <DashboardOverview />
