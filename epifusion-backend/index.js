@@ -5,6 +5,7 @@ import uploadRoute from './routes/upload.js';
 import chatRoute   from './routes/chat.js';
 import alertRoutes from './routes/alerts.js';
 import analyzeRoutes from './routes/analyze.js';
+import 'dotenv/config';
 
 dotenv.config();
 
